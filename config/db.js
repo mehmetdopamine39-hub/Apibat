@@ -1,18 +1,22 @@
 const mysql = require("mysql");
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "101m",
+const connection = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    port: process.env.DB_PORT || 3306,
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
-db.connect((err) => {
-  if (err) {
-    console.error("- 101m:", err);
-    process.exit(1);
-  }
-  console.log("+ 101m");
+connection.connect((err) => {
+    if (err) {
+        console.error("MySQL bağlantı hatası (db.js):", err);
+    } else {
+        console.log("MySQL bağlantısı başarılı (db.js)");
+    }
 });
 
-module.exports = db;
+module.exports = connection;
